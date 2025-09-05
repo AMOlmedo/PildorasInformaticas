@@ -19,5 +19,12 @@ if emmail==True:
 else:
     print("es una direccion invalida")
 
+print("======print f =====")
+
+for i in range(5,20,3): # de la pssicion 5 a la 20 con saltos de 3
+    print(f"vuelta nuemero {i}")
+
+
+
 
 
