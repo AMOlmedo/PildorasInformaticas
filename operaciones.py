@@ -12,8 +12,13 @@ def division(num1,num2):
         print("No se puede dividir por 0")
         return "Operacion no valida"
 
-var1 = (int(input("ingrese el 1er numero: ")))
-var2 = (int(input("ingrese el 2do numero: ")))
+while True:
+    try:
+        var1 = (int(input("ingrese el 1er numero: ")))
+        var2 = (int(input("ingrese el 2do numero: ")))
+        break
+    except ValueError:
+        print("los valores no son correctos, intetelo con numeros enteros: ")
 
 opcion = input("Ingrea la operacion deseada de suma, resta, multiplicacion, division: ")
 operacion=opcion.lower()
@@ -28,3 +33,5 @@ elif operacion == "division":
     print(division(var1,var2))
 else:
     print("minguna opocion es correcta")
+
+print("FIN DEL PROGRAMA")
