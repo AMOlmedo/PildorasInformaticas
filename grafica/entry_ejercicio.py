@@ -32,6 +32,6 @@ edadLabel=Label(miFrame, text="Edad: ")
 edadLabel.grid(row=2,column=0, sticky="w", padx=10, pady=10)
 
 passLabel=Label(miFrame, text="Password: ")
-passLabel.grid(row=2,column=0, sticky="w", padx=10, pady=10)
+passLabel.grid(row=3,column=0, sticky="w", padx=10, pady=10)
 
 root.mainloop()
