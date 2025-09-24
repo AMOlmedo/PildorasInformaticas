@@ -1,9 +1,14 @@
 from tkinter import *
 
-raiz=Tk()
+raiz=Tk()  #crea la ventana
 
-formulario=Frame(raiz, width=500, height=600)
+formulario=Frame(raiz, width=500, height=600) 
+#crea el contenedor dentro de la ventana
+
 formulario.pack()
+#miFrame.pack() le dice a Tkinter que coloque ese marco en la ventana 
+# usando el gestor de geometría pack().
+
 
 #===== Entry - entradas del formulario =====
 nombre=Entry(formulario)
@@ -54,3 +59,8 @@ enviar=Button(raiz, text="Enviar!", command=botonEnviar)
 enviar.pack()
 
 raiz.mainloop()
+#¿Qué hace mainloop()? Es un bucle infinito que:
+# Mantiene la ventana abierta mientras el usuario no la cierre.
+# Escucha eventos como clics, teclas, movimientos del mouse.
+# Ejecuta funciones asociadas a esos eventos (por ejemplo, si hacés clic en un botón).
+# Actualiza la interfaz en tiempo real según las acciones del usuario.
