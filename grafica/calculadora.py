@@ -2,8 +2,9 @@ from tkinter import *
 raiz=Tk()
 miFrame=Frame(raiz)
 miFrame.pack()
-opreracion=""
+operacion=""
 resultado=0
+reset_pantalla=False
 
  #======pantalla=====
 numeroPantalla=StringVar()  # ver al pie del archivo
@@ -13,23 +14,27 @@ pantalla.config(background="black", fg="#03f943", justify="right")
 
 #==== puslo teclado=====
 def numeroPulsado(num):
-    global opreracion
-    if opreracion !="": 
+    global operacion
+    if operacion !="": 
         numeroPantalla.set(num)
-        opreracion=""
-    else:
+        operacion=""
+    else: 
         numeroPantalla.set(numeroPantalla.get() + num)
 
 def suma(num):
-    global opreracion
+    global operacion
     global resultado
     resultado+=int(num)
-    opreracion="suma" 
+    operacion="suma" 
+    reset_pantalla=True
     numeroPantalla.set(resultado)
 
-def resta():
-    global opreracion
-    opreracion="resta"
+def resta(num):
+    global operacion
+    global resultado
+    resultado=int(resultado)-int(num)
+    operacion="resta"
+    numeroPantalla.set(resultado)
 
 def el_resultado():
     global resultado
@@ -61,7 +66,7 @@ boton2=Button(miFrame, text="2",width="3",command=lambda:numeroPulsado("2"))
 boton2.grid(row=4, column=2)
 boton3=Button(miFrame, text="3",width="3",command=lambda:numeroPulsado("3"))
 boton3.grid(row=4, column=3)
-botonResta=Button(miFrame, text="-",width="3", command=lambda:resta())
+botonResta=Button(miFrame, text="-",width="3", command=lambda:resta(numeroPantalla.get()))
 botonResta.grid(row=4, column=4)
 #====teclado fila 4 =====
 boton0=Button(miFrame, text="0",width="3",command=lambda:numeroPulsado("0"))
