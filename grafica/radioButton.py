@@ -5,7 +5,7 @@ root=Tk()
 
 opcion=IntVar()   #fnc q define en Entry es un int
 
-Label(root, text="Genero").pack
+Label(root, text="Genero").pack()
 def imprimir():
     if opcion.get() ==1:
         mensaje.config(text="Has seleccionado Masculino")
