@@ -10,7 +10,7 @@ miCursor=miConexion.cursor()
 miCursor.execute('''    
     CREATE TABLE miembros (
                  ID INTEGER PRIMARY KEY AUTOINCREMENT,
-                 NOMBRE VARCHAR(30),
+                 NOMBRE VARCHAR(30) UNIQUE,
                  EDAD INTEGER,
                  PAIS VARCHAR(50))
                  ''')
