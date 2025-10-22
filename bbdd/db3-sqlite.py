@@ -24,7 +24,7 @@ personajesLista=[
 
 ]
     
-miCursor.executemany("INSERT INTO miembros VALUES(?,?,?)", personajesLista)
+miCursor.executemany("INSERT INTO miembros VALUES(NULL,?,?,?)", personajesLista)
 
 miConexion.commit()
 miConexion.close()
