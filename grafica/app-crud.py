@@ -4,7 +4,7 @@ import sqlite3
 import os
 
 directorio_script = os.path.dirname(os.path.abspath(__file__)) #esto es para q el SO pueda crear la DB
-ruta_bd = os.path.join(directorio_script, "usuarios_db")
+ruta_bd = os.path.join(directorio_script, "usuarios_db.db")
 
 # ===== FUNCIONES ======
 def conexionDB():
@@ -38,6 +38,18 @@ def limpiarCampos():
     miPass.set("")
     textoComentario.delete(1.0, END) #borra desde el 1er caracter hasta el final
 
+def crear():
+    miConexion=sqlite3.connect("usuarios_db.db")
+    miCursor=miConexion.cursor()
+    
+    miCursor.execute(
+    "INSERT INTO USUARIOS VALUES(NULL, ?, ?, ?, ?, ?)",
+    (miNombre.get(), miApellido.get(), miPass.get(), miDirreccion.get(), textoComentario.get(1.0, END))
+    )
+
+    miConexion.commit()
+    messagebox.showinfo("BBDD", "Registro insertado con éxito")
+
 
 root=Tk()
 barraMenu=Menu(root)
@@ -52,7 +64,7 @@ borrarMenu=Menu(barraMenu, tearoff=0)
 borrarMenu.add_command(label="Borrar Campos", command=limpiarCampos)
 
 crudMenu=Menu(barraMenu, tearoff=0)
-crudMenu.add_command(label="Crear")
+crudMenu.add_command(label="Crear", command=crear)
 crudMenu.add_command(label="Leer")
 crudMenu.add_command(label="Actualizar")
 crudMenu.add_command(label="Borrar")
@@ -128,7 +140,7 @@ textoComentario.config(yscrollcommand=scrollVert.set)
 miFrame2=Frame(root)  # Segundo frame para la seccion de los botones
 miFrame2.pack()
 
-botonCrear=Button(miFrame2, text="CREATE")
+botonCrear=Button(miFrame2, text="CREATE", command=crear)
 botonCrear.grid(row=1, column=0, sticky="e", padx=10, pady=10)
 
 botonLeer=Button(miFrame2, text="READ")
