@@ -30,17 +30,26 @@ def salirAplicacion():
     if valor =="yes":
         root.destroy()
 
+def limpiarCampos():
+    miId.set("")
+    miNombre.set("")
+    miApellido.set("")
+    miDirreccion.set("")
+    miPass.set("")
+    textoComentario.delete(1.0, END) #borra desde el 1er caracter hasta el final
+
+
 root=Tk()
 barraMenu=Menu(root)
 root.config(menu=barraMenu, width=300, height=300)
 
-
+# barra de menu=======
 bbddMenu=Menu(barraMenu, tearoff=0)
 bbddMenu.add_command(label="Conectar", command=conexionDB)
 bbddMenu.add_command(label="Salir", command=salirAplicacion)
 
 borrarMenu=Menu(barraMenu, tearoff=0)
-borrarMenu.add_command(label="Borrar Campos")
+borrarMenu.add_command(label="Borrar Campos", command=limpiarCampos)
 
 crudMenu=Menu(barraMenu, tearoff=0)
 crudMenu.add_command(label="Crear")
@@ -61,6 +70,14 @@ barraMenu.add_cascade(label="Ayuda", menu=ayudaMenu)
 
 miFrame=Frame(root)
 miFrame.pack()
+
+miId=StringVar()  # StringVar() Vincula datos entre la interfaz grafica y el código.
+miNombre=StringVar()
+miApellido=StringVar()
+miPass=StringVar()
+miDirreccion=StringVar()
+
+
 # ==== label ============
 idLabel=Label(miFrame, text="ID:")
 idLabel.grid(row=0, column=0, sticky="e", padx=10, pady=10)
@@ -83,22 +100,22 @@ comentarioLabel.grid(row=5, column=0, sticky="en", padx=10, pady=10)
 #====== Comienzo de campos=====
 
 
-cuadroID=Entry(miFrame)
+cuadroID=Entry(miFrame, textvariable=miId)
 cuadroID.grid(row=0,column=1, padx=10,pady=10)
 
-cuadroNombre=Entry(miFrame)
+cuadroNombre=Entry(miFrame, textvariable=miNombre)
 cuadroNombre.grid(row=1,column=1, padx=10,pady=10)
 cuadroNombre.config(fg="red", justify="right")
 
-cuadroApellido=Entry(miFrame)
+cuadroApellido=Entry(miFrame, textvariable=miApellido)
 cuadroApellido.grid(row=2,column=1, padx=10,pady=10)
 cuadroApellido.config(fg="red", justify="right")
 
-cuadroPass=Entry(miFrame)
+cuadroPass=Entry(miFrame, textvariable=miPass)
 cuadroPass.grid(row=3,column=1, padx=10,pady=10)
 cuadroPass.config(show="*", justify="right")
 
-cuadroDireccion=Entry(miFrame)
+cuadroDireccion=Entry(miFrame, textvariable=miDirreccion)
 cuadroDireccion.grid(row=4,column=1, padx=10,pady=10)
 cuadroDireccion.config(fg="red", justify="right")
 
