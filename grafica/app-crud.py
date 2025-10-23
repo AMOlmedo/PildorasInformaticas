@@ -99,7 +99,6 @@ comentarioLabel.grid(row=5, column=0, sticky="en", padx=10, pady=10)
 
 #====== Comienzo de campos=====
 
-
 cuadroID=Entry(miFrame, textvariable=miId)
 cuadroID.grid(row=0,column=1, padx=10,pady=10)
 
@@ -126,7 +125,7 @@ scrollVert.grid(row=5, column=2, sticky="nsew")
 
 textoComentario.config(yscrollcommand=scrollVert.set)
 
-miFrame2=Frame(root)
+miFrame2=Frame(root)  # Segundo frame para la seccion de los botones
 miFrame2.pack()
 
 botonCrear=Button(miFrame2, text="CREATE")
