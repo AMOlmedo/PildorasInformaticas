@@ -1,6 +1,34 @@
 from tkinter import *
 from tkinter import messagebox
 import sqlite3
+import os
+
+directorio_script = os.path.dirname(os.path.abspath(__file__)) #esto es para q el SO pueda crear la DB
+ruta_bd = os.path.join(directorio_script, "usuarios_db")
+
+# ===== FUNCIONES ======
+def conexionDB():
+    miConexion=sqlite3.connect(ruta_bd)
+    miCursor=miConexion.cursor()
+    try:
+        miCursor.execute('''
+        CREATE TABLE USUARIOS(
+                     ID INTEGER PRIMARY KEY AUTOINCREMENT,
+                     NOMBRE VARCHAR(50),
+                     APELLIDO VARCHAR(50),
+                     PASSWORD VARCHAR (30),
+                     DIRECCION VARCHAR (100),
+                     COMENTARIOS VARCHAR (300))            
+                     ''')
+        messagebox.showinfo("BBDD", "Base de Datos creada con éxito")
+    except:
+        messagebox.showwarning("Atencion!", "La Base de Datos ya existe")
+ 
+
+def salirAplicacion():
+    valor=messagebox.askquestion("Salir", "Desea salir de la Aplicacion?")
+    if valor =="yes":
+        root.destroy()
 
 root=Tk()
 barraMenu=Menu(root)
@@ -8,8 +36,8 @@ root.config(menu=barraMenu, width=300, height=300)
 
 
 bbddMenu=Menu(barraMenu, tearoff=0)
-bbddMenu.add_command(label="Conectar")
-bbddMenu.add_command(label="Salir")
+bbddMenu.add_command(label="Conectar", command=conexionDB)
+bbddMenu.add_command(label="Salir", command=salirAplicacion)
 
 borrarMenu=Menu(barraMenu, tearoff=0)
 borrarMenu.add_command(label="Borrar Campos")
@@ -33,7 +61,7 @@ barraMenu.add_cascade(label="Ayuda", menu=ayudaMenu)
 
 miFrame=Frame(root)
 miFrame.pack()
-# ==== label 
+# ==== label ============
 idLabel=Label(miFrame, text="ID:")
 idLabel.grid(row=0, column=0, sticky="e", padx=10, pady=10)
 
