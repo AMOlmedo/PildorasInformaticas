@@ -12,7 +12,7 @@ def conexionDB():
     miCursor=miConexion.cursor()
     try:
         miCursor.execute('''
-        CREATE TABLE USUARIOS(
+        CREATE TABLE usuarios(
                      ID INTEGER PRIMARY KEY AUTOINCREMENT,
                      NOMBRE VARCHAR(50),
                      APELLIDO VARCHAR(50),
@@ -41,9 +41,9 @@ def limpiarCampos():
 def crear():
     miConexion=sqlite3.connect("usuarios_db.db")
     miCursor=miConexion.cursor()
-    
+
     miCursor.execute(
-    "INSERT INTO USUARIOS VALUES(NULL, ?, ?, ?, ?, ?)",
+    "INSERT INTO usuarios VALUES(NULL, ?, ?, ?, ?, ?)",
     (miNombre.get(), miApellido.get(), miPass.get(), miDirreccion.get(), textoComentario.get(1.0, END))
     )
 
