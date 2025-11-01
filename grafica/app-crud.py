@@ -43,7 +43,7 @@ def crear():
     miCursor=miConexion.cursor()
 
     miCursor.execute(
-    "INSERT INTO usuarios VALUES(NULL, ?, ?, ?, ?, ?)",
+    "INSERT INTO USUARIOS VALUES(NULL, ?, ?, ?, ?, ?)",
     (miNombre.get(), miApellido.get(), miPass.get(), miDirreccion.get(), textoComentario.get(1.0, END))
     )
 
