@@ -20,11 +20,11 @@ def conexionDB():
                      DIRECCION VARCHAR (100),
                      COMENTARIOS VARCHAR (300))            
                      ''')
+        miConexion.commit()  # <-- Esto guarda los cambios
         messagebox.showinfo("BBDD", "Base de Datos creada con éxito")
     except:
         messagebox.showwarning("Atencion!", "La Base de Datos ya existe")
  
-
 def salirAplicacion():
     valor=messagebox.askquestion("Salir", "Desea salir de la Aplicacion?")
     if valor =="yes":
@@ -152,6 +152,4 @@ botonUpdate.grid(row=1, column=2, sticky="e", padx=10, pady=10)
 botonBorrar=Button(miFrame2, text="DELETE")
 botonBorrar.grid(row=1, column=3, sticky="e", padx=10, pady=10)
                  
-
-
 root.mainloop()
