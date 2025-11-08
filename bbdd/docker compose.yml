@@ -1,0 +1,27 @@
+services:
+  postgres_docker:
+    image: postgres
+    hostname: postgres_srv
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      - DATABASE_HOST=127.0.0.1
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres1234
+      - POSTGRES_DB=clientes_db
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin1234
+    ports:
+      - "8181:80"
+    depends_on:
+      - postgres_docker
+
+volumes:
+  pgdata:
