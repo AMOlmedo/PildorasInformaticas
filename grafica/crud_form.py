@@ -2,6 +2,18 @@ from tkinter import *
 from tkinter import messagebox
 import psycopg2
 
+def conexionDDBB():
+    
+        conexion_db=psycopg2.connect(
+            host='localhost',
+            port=5432, 
+            database="formulario_db",
+            user='postgres',
+            password='postgres12345')
+        miCursor=conexion_db.cursor()    
+        print("conexion exitosa")
+
+   
 root=Tk()
 
 #-----Creacion de la Barra de Menu -------
