@@ -6,18 +6,52 @@ import psycopg2
 # ----- Funciones ---------------
 
 def conexionDDBB():  
-        try: 
-            conexion_db=psycopg2.connect(
-                host='localhost',
-                port=5432, 
-                database="formulario_db",
-                user='postgres',
-                password='postgres1234')
-            miCursor=conexion_db.cursor()    
-            print("conexion exitosa")
-            messagebox.showinfo("DDBB", "Conexion exitosa a la DB")
-        except:
-            messagebox.showwarning("Atencion", "La Base de Datos ya existe")
+    try: 
+        conexion_db = psycopg2.connect(
+            host='localhost',
+            port=5432, 
+            database="formulario_db",
+            user='postgres',
+            password='postgres1234'
+        )
+        miCursor = conexion_db.cursor()    
+        print("Conexión exitosa")
+        messagebox.showinfo("DDBB", "Conexión exitosa a la DB")
+        return conexion_db, miCursor
+    except Exception as e:
+        messagebox.showwarning("Atención", f"No se pudo conectar:ESTE MENSAJE ES DE LA EXECPCION !!!: {e} ") #captura el error
+        return None, None
+
+
+def salirAPP():
+    valor=messagebox.askquestion("Salir", "Deseas salir de la App?")
+    if valor == "yes":
+        root.destroy()
+
+def limpiarCampos():
+    miNombre.set("")    # da una cadena vacia para limpiar el campo
+    miApellido.set("")
+    miTelefono.set("")
+    miMail.set("")
+    campoTexto.delete(1.0, END) # desde la posicion 1 hasta el final
+
+def crear():
+    conexion, cursor = conexionDDBB()
+    if conexion and cursor:
+        try:
+            cursor.execute(
+            "INSERT INTO user_table (nombre, apellido, telefono, email, mensaje) VALUES (%s, %s, %s, %s, %s)",
+            (miNombre.get(), miApellido.get(), miTelefono.get(), miMail.get(), campoTexto.get("1.0", END).strip())
+            )
+
+            conexion.commit()
+            messagebox.showinfo("BBDD", "Registro insertado con éxito")
+        except Exception as e:
+            messagebox.showerror("Error", f"No se pudo insertar: {e}")
+            print(e)
+        finally:
+            cursor.close()
+            conexion.close()
 
 
 root=Tk()
@@ -27,14 +61,14 @@ barraMenu=Menu(root) # asociamos a barraMenu la propiedad Menu para este root
 root.config(menu=barraMenu, width=300, height=300) # asociamos la barra al root y el tamaño de la barra
 
 menu_bd=Menu(barraMenu,tearoff=0)
-menu_bd.add_command(label="conectar BD")
-menu_bd.add_command(label="Salir")
+menu_bd.add_command(label="conectar BD", command=conexionDDBB)
+menu_bd.add_command(label="Salir", command=salirAPP)
 
 menu_borrar=Menu(barraMenu,tearoff=0)
-menu_borrar.add_command(label="Borrar")
+menu_borrar.add_command(label="Borrar", command=limpiarCampos)
 
 menu_crud=Menu(barraMenu,tearoff=0)
-menu_crud.add_command(label="Create")
+menu_crud.add_command(label="Create", command=crear)
 menu_crud.add_command(label="Read")
 menu_crud.add_command(label="Update")
 menu_crud.add_command(label="Delete")
@@ -53,19 +87,24 @@ barraMenu.add_cascade(label="Ayuda", menu=menu_ayuda)
 miFrame=Frame(root) #creamos el frame
 miFrame.pack()  # empaquetamos el frame
 
-campoNombre=Entry(miFrame)
+miNombre=StringVar()  #para poder manipular los datos de los entry
+miApellido=StringVar()
+miTelefono=StringVar()
+miMail=StringVar()
+
+campoNombre=Entry(miFrame, textvariable=miNombre)
 campoNombre.grid(row=0, column=1, padx=10, pady=10)
 campoNombre.config(fg="Green", justify= "right")
 
-campoApellido=Entry(miFrame)
+campoApellido=Entry(miFrame, textvariable=miApellido)
 campoApellido.grid(row=1, column=1, padx=10, pady=10)
 campoApellido.config(fg="Green", justify= "right")
 
-campoTelefono=Entry(miFrame)
+campoTelefono=Entry(miFrame, textvariable=miTelefono)
 campoTelefono.grid(row=2, column=1, padx=10, pady=10)
 campoTelefono.config(fg="Green", justify= "right")
 
-campoMail=Entry(miFrame)
+campoMail=Entry(miFrame, textvariable=miMail)
 campoMail.grid(row=3, column=1, padx=10, pady=10)
 campoMail.config(fg="Green", justify= "right")
 
@@ -97,7 +136,7 @@ textoLabel.grid(row=4, column=0, sticky="n", padx=10, pady=10)
 miFrame2=Frame(root)    # Creamos un segundo Frame 
 miFrame2.pack()
 
-botonCrear=Button(miFrame2, text="CREATE")
+botonCrear=Button(miFrame2, text="CREATE",command=crear)
 botonCrear.grid(row=0, column=0, sticky="e", padx=10, pady=10)
 
 botonLeer=Button(miFrame2, text="READ")
