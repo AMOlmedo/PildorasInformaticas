@@ -2,18 +2,24 @@ from tkinter import *
 from tkinter import messagebox
 import psycopg2
 
-def conexionDDBB():
-    
-        conexion_db=psycopg2.connect(
-            host='localhost',
-            port=5432, 
-            database="formulario_db",
-            user='postgres',
-            password='postgres12345')
-        miCursor=conexion_db.cursor()    
-        print("conexion exitosa")
 
-   
+# ----- Funciones ---------------
+
+def conexionDDBB():  
+        try: 
+            conexion_db=psycopg2.connect(
+                host='localhost',
+                port=5432, 
+                database="formulario_db",
+                user='postgres',
+                password='postgres1234')
+            miCursor=conexion_db.cursor()    
+            print("conexion exitosa")
+            messagebox.showinfo("DDBB", "Conexion exitosa a la DB")
+        except:
+            messagebox.showwarning("Atencion", "La Base de Datos ya existe")
+
+
 root=Tk()
 
 #-----Creacion de la Barra de Menu -------
@@ -63,14 +69,14 @@ campoMail=Entry(miFrame)
 campoMail.grid(row=3, column=1, padx=10, pady=10)
 campoMail.config(fg="Green", justify= "right")
 
-campoTexto=Text(miFrame, width=16, height=5)
+campoTexto=Text(miFrame, width=16, height=5) # 16 caracteres  por 5 linas es el tamaño del campo Texto
 campoTexto.grid(row=4, column=1, padx=10, pady=10)
 scrollVertical=Scrollbar(miFrame, command=campoTexto.yview) #creacion barra de desplazamiento del campo de texto
-scrollVertical.grid(row=5, column=2, sticky="nsew")
-
+scrollVertical.grid(row=4, column=2, sticky="ns")  # de north a south ( de arriba hasta abajo)
+# sticky: Es una opción dentro del método grid() que determina cómo se comporta el widget si es más pequeño que la celda que se le ha asignado.
 campoTexto.config(yscrollcommand=scrollVertical.set)
 
-# ----- Comienzo Label Campos ----
+# ----- Comienzo Label de Campos ----
 
 nombreLabel=Label(miFrame, text="Nombre:")
 nombreLabel.grid(row=0, column=0, sticky="e", padx=10, pady=10)
@@ -88,7 +94,7 @@ textoLabel=Label(miFrame, text="Mensaje:")
 textoLabel.grid(row=4, column=0, sticky="n", padx=10, pady=10)
 
 # ----botones CRUD----
-miFrame2=Frame(root)
+miFrame2=Frame(root)    # Creamos un segundo Frame 
 miFrame2.pack()
 
 botonCrear=Button(miFrame2, text="CREATE")
