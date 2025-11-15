@@ -52,7 +52,27 @@ def crear():
         finally:
             cursor.close()
             conexion.close()
-
+def leer():
+    conexion, cursor=conexionDDBB()
+    if conexion and cursor:
+        try:
+            cursor.execute("SELECT * FROM user_table WHERE id=%s", (miId.get(),))
+            registro=cursor.fetchall()
+            if registro:
+                miNombre.set(registro[1])
+                miApellido.set(registro[2])
+                miTelefono.set(registro[3])
+                miMail.set(registro[4])
+                campoTexto.delete(1.0, END)
+                campoTexto.insert(END, registro[5])
+            else:
+                messagebox.showinfo("BBDD", "No se encontró el registro")
+        except Exception as e:
+            messagebox.showerror("Error", f"No se pudo leer: {e}")
+            print(e)
+        finally:
+            cursor.close()
+            conexion.close()
 
 root=Tk()
 
@@ -69,7 +89,7 @@ menu_borrar.add_command(label="Borrar", command=limpiarCampos)
 
 menu_crud=Menu(barraMenu,tearoff=0)
 menu_crud.add_command(label="Create", command=crear)
-menu_crud.add_command(label="Read")
+menu_crud.add_command(label="Read", command=leer)
 menu_crud.add_command(label="Update")
 menu_crud.add_command(label="Delete")
 
@@ -87,50 +107,58 @@ barraMenu.add_cascade(label="Ayuda", menu=menu_ayuda)
 miFrame=Frame(root) #creamos el frame
 miFrame.pack()  # empaquetamos el frame
 
+miId=StringVar()
 miNombre=StringVar()  #para poder manipular los datos de los entry
 miApellido=StringVar()
 miTelefono=StringVar()
 miMail=StringVar()
 
+campoId=Entry(miFrame, textvariable=miId)
+campoId.grid(row=0, column=1, padx=10, pady=10)
+
+
 campoNombre=Entry(miFrame, textvariable=miNombre)
-campoNombre.grid(row=0, column=1, padx=10, pady=10)
+campoNombre.grid(row=1, column=1, padx=10, pady=10)
 campoNombre.config(fg="Green", justify= "right")
 
 campoApellido=Entry(miFrame, textvariable=miApellido)
-campoApellido.grid(row=1, column=1, padx=10, pady=10)
+campoApellido.grid(row=2, column=1, padx=10, pady=10)
 campoApellido.config(fg="Green", justify= "right")
 
 campoTelefono=Entry(miFrame, textvariable=miTelefono)
-campoTelefono.grid(row=2, column=1, padx=10, pady=10)
+campoTelefono.grid(row=3, column=1, padx=10, pady=10)
 campoTelefono.config(fg="Green", justify= "right")
 
 campoMail=Entry(miFrame, textvariable=miMail)
-campoMail.grid(row=3, column=1, padx=10, pady=10)
+campoMail.grid(row=4, column=1, padx=10, pady=10)
 campoMail.config(fg="Green", justify= "right")
 
 campoTexto=Text(miFrame, width=16, height=5) # 16 caracteres  por 5 linas es el tamaño del campo Texto
-campoTexto.grid(row=4, column=1, padx=10, pady=10)
+campoTexto.grid(row=5, column=1, padx=10, pady=10)
 scrollVertical=Scrollbar(miFrame, command=campoTexto.yview) #creacion barra de desplazamiento del campo de texto
-scrollVertical.grid(row=4, column=2, sticky="ns")  # de north a south ( de arriba hasta abajo)
+scrollVertical.grid(row=5, column=2, sticky="ns")  # de north a south ( de arriba hasta abajo)
 # sticky: Es una opción dentro del método grid() que determina cómo se comporta el widget si es más pequeño que la celda que se le ha asignado.
 campoTexto.config(yscrollcommand=scrollVertical.set)
 
 # ----- Comienzo Label de Campos ----
 
+idLabel=Label(miFrame, text="ID:")
+idLabel.grid(row=0, column=0, sticky="e", padx=10, pady=10)
+
 nombreLabel=Label(miFrame, text="Nombre:")
-nombreLabel.grid(row=0, column=0, sticky="e", padx=10, pady=10)
+nombreLabel.grid(row=1, column=0, sticky="e", padx=10, pady=10)
 
 apellidoLabel=Label(miFrame, text="Apellido:")
-apellidoLabel.grid(row=1, column=0, sticky="e", padx=10, pady=10)
+apellidoLabel.grid(row=2, column=0, sticky="e", padx=10, pady=10)
 
 telefonoLabel=Label(miFrame, text="Telefono:")
-telefonoLabel.grid(row=2, column=0, sticky="e", padx=10, pady=10)
+telefonoLabel.grid(row=3, column=0, sticky="e", padx=10, pady=10)
 
 mailLabel=Label(miFrame, text="E-Mail:")
-mailLabel.grid(row=3, column=0, sticky="e", padx=10, pady=10)
+mailLabel.grid(row=4, column=0, sticky="e", padx=10, pady=10)
 
 textoLabel=Label(miFrame, text="Mensaje:")
-textoLabel.grid(row=4, column=0, sticky="n", padx=10, pady=10)
+textoLabel.grid(row=5, column=0, sticky="n", padx=10, pady=10)
 
 # ----botones CRUD----
 miFrame2=Frame(root)    # Creamos un segundo Frame 
@@ -139,7 +167,7 @@ miFrame2.pack()
 botonCrear=Button(miFrame2, text="CREATE",command=crear)
 botonCrear.grid(row=0, column=0, sticky="e", padx=10, pady=10)
 
-botonLeer=Button(miFrame2, text="READ")
+botonLeer=Button(miFrame2, text="READ", command=leer)
 botonLeer.grid(row=0, column=1, sticky="e", padx=10, pady=10)
 
 botonActualizar=Button(miFrame2, text="UPDATE")
