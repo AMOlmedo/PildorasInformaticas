@@ -75,6 +75,27 @@ def leer():
             cursor.close()
             conexion.close()  # mejor cerrar la conexión
 
+def actualizar():
+    connection, cursor = conexionDDBB()
+    cursor.execute("UPDATE user_table SET nombre=%s, apellido=%s, telefono=%s, email=%s, mensaje=%s WHERE id=%s",
+                   (miNombre.get(), miApellido.get(), miTelefono.get(), miMail.get(), campoTexto.get("1.0", END).strip(), int(miId.get())))
+    connection.commit()
+    messagebox.showinfo("BBDD", "Registro actualizado con éxito")
+    cursor.close()
+    connection.close()
+
+
+def borrar():
+    connection, cursor = conexionDDBB()
+    cursor.execute("DELETE FROM user_table WHERE id=%s", (int(miId.get()),))
+    connection.commit()
+    messagebox.showinfo("BBDD", "Registro borrado con éxito")
+    cursor.close()
+    connection.close()  
+
+
+
+# ----- Comienzo de la Interfaz Gráfica -----
 
 root=Tk()
 
@@ -92,8 +113,8 @@ menu_borrar.add_command(label="Borrar", command=limpiarCampos)
 menu_crud=Menu(barraMenu,tearoff=0)
 menu_crud.add_command(label="Create", command=crear)
 menu_crud.add_command(label="Read", command=leer)
-menu_crud.add_command(label="Update")
-menu_crud.add_command(label="Delete")
+menu_crud.add_command(label="Update", command=actualizar)
+menu_crud.add_command(label="Delete", command=borrar)
 
 menu_ayuda=Menu(barraMenu,tearoff=0)
 menu_ayuda.add_command(label="Ayuda")
@@ -172,10 +193,10 @@ botonCrear.grid(row=0, column=0, sticky="e", padx=10, pady=10)
 botonLeer=Button(miFrame2, text="READ", command=leer)
 botonLeer.grid(row=0, column=1, sticky="e", padx=10, pady=10)
 
-botonActualizar=Button(miFrame2, text="UPDATE")
+botonActualizar=Button(miFrame2, text="UPDATE", command=actualizar)
 botonActualizar.grid(row=0, column=2, sticky="e", padx=10, pady=10)
 
-botonBorrar=Button(miFrame2, text="DELETE")
+botonBorrar=Button(miFrame2, text="DELETE", command=borrar)
 botonBorrar.grid(row=0, column=3, sticky="e", padx=10, pady=10)
 
 root.mainloop()
