@@ -53,11 +53,11 @@ def crear():
             cursor.close()
             conexion.close()
 def leer():
-    conexion, cursor=conexionDDBB()
+    conexion, cursor = conexionDDBB()
     if conexion and cursor:
         try:
-            cursor.execute("SELECT * FROM user_table WHERE id=%s", (miId.get(),))
-            registro=cursor.fetchall()
+            cursor.execute("SELECT * FROM user_table WHERE id = %s", (int(miId.get()),))
+            registro = cursor.fetchone()  # devuelve una sola fila como tupla
             if registro:
                 miNombre.set(registro[1])
                 miApellido.set(registro[2])
@@ -65,6 +65,7 @@ def leer():
                 miMail.set(registro[4])
                 campoTexto.delete(1.0, END)
                 campoTexto.insert(END, registro[5])
+                print(registro)
             else:
                 messagebox.showinfo("BBDD", "No se encontró el registro")
         except Exception as e:
@@ -72,7 +73,8 @@ def leer():
             print(e)
         finally:
             cursor.close()
-            conexion.close()
+            conexion.close()  # mejor cerrar la conexión
+
 
 root=Tk()
 
