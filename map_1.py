@@ -8,6 +8,7 @@ class Empleado:
     def __str__(self):
         return "{} que trabaja como {} tiene un salario de USD$ {}".format(self.nombre, self.cargo, self.salario)
     
+    
 ListaEmpleados=[
     Empleado("Juan", "Director", 7500),
     Empleado("Ana", "Presidente", 8500),
